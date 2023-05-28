@@ -1,42 +1,27 @@
 <?php
-$msg = "";
+  $msg=0;
+  if($_SERVER['REQUEST_METHOD']=="POST")
+  {
+    if(empty($_POST['fname'])){
+      echo("Name cant be Blank!");
+      $msg=1;
+    }
+    if(!is_numeric($_POST['mobileno'])){
+      echo("Enter a valid Mobile Number!");
+      $msg=1;
+    }
+    pattern='/\b[\w.-]+@[\w.-]+\.[A-Z a-z]{2,6}\b/';
+    if(!preg_match($pattern,$_POST['email'])){
+      echo("Enter a valid Email ID!");
+      $msg=1;
+      }
+      if($msg==0)
+      {
+        echo("Data has been recorded successfully");
+      }
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $mobile = $_POST['mobile'];
-
-  // Validate name
-  if (empty($name)) {
-    $msg = "Name is required";
-  } else if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
-    $msg = "Only letters and white space allowed in name";
   }
-
-  // Validate email
-  if (empty($email)) {
-    $msg = "Email is required";
-  } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $msg = "Invalid email format";
-  }
-
-  // Validate mobile
-  if (empty($mobile)) {
-    $msg = "Mobile number is required";
-  } else if (!preg_match("/^[0-9]*$/", $mobile)) {
-    $msg = "Only numbers allowed in mobile number";
-  } else if (strlen($mobile) != 10) {
-    $msg = "Mobile number should be 10 digits";
-  }
-
-  // If all validation passed
-  if (empty($msg)) {
-    // Insert data to database or do other actions
-    $msg = "Data has been recorded successfully";
-  }
-}
 ?>
-
 <html>
   <body>
     <h2>PHP Form Validation Example</h2>
